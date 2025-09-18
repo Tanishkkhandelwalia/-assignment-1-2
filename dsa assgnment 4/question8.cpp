@@ -1,0 +1,60 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+bool checkSorted(queue<int>& input) {
+    stack<int> st;
+    queue<int> output;
+    int expected = 1;
+    int n = input.size();
+
+    while (!input.empty()) {
+        int front = input.front();
+        input.pop();
+
+        if (front == expected) {
+            output.push(front);
+            expected++;
+        }
+        else {
+            if (!st.empty() && st.top() < front) {
+                
+                return false;
+            }
+            st.push(front);
+        }
+
+        
+        while (!st.empty() && st.top() == expected) {
+            output.push(st.top());
+            st.pop();
+            expected++;
+        }
+    }
+
+    
+    while (!st.empty() && st.top() == expected) {
+        output.push(st.top());
+        st.pop();
+        expected++;
+    }
+
+    return (expected - 1 == n);
+}
+
+int main() {
+    queue<int> q;
+    q.push(5);
+    q.push(1);
+    q.push(2);
+    q.push(3);
+    q.push(4);
+
+    if (checkSorted(q))
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
+
+    return 0;
+}
