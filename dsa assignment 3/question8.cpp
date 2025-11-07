@@ -1,31 +1,33 @@
-#include <iostream>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int n;
-    cin >> n;
-    vector<int> arr(n), nge(n);
-    for (int i = 0; i < n; i++) cin >> arr[i];
-
-    stack<int> st; 
+vector<int> nextGreaterElements(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> ans(n, -1);
+    stack<int> st;
 
     for (int i = n - 1; i >= 0; i--) {
-        
-        while (!st.empty() && st.top() <= arr[i]) {
+
+        // Pop all smaller elements
+        while (!st.empty() && st.top() <= arr[i])
             st.pop();
-        }
 
-       
-        nge[i] = st.empty() ? -1 : st.top();
+        // If stack top is greater → it is NGE
+        if (!st.empty())
+            ans[i] = st.top();
 
-        
+        // Push current element
         st.push(arr[i]);
     }
 
-   
-    for (int i = 0; i < n; i++)
-        cout << nge[i] << " ";
-    return 0;
+    return ans;
 }
+
+int main() {
+    vector<int> arr = {4, 5, 2, 25};
+    vector<int> result = nextGreaterElements(arr);
+
+    for (int x : result) cout << x << " ";
+}
+
+
